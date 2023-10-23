@@ -4,19 +4,6 @@
   
     
     <entry>
-      <title>微信小程序之旅————数字比大小</title>
-      <link href="/2023/04/02/WeChat-leaning/"/>
-      <url>/2023/04/02/WeChat-leaning/</url>
-      
-        <content type="html"><![CDATA[<blockquote><p>记录该板块记录了我目前学习微信小程序的开发，本版块所书写的内容仅代表个人观点<br>请仔细甄别。欢迎与大家相互学习，一起共同进步。</p></blockquote><h1 id="创建微信小程序"><a href="#创建微信小程序" class="headerlink" title="创建微信小程序"></a>创建微信小程序</h1><p>微信小程序在学习之前肯定是要有一个微信小程序的开发者账号的，里面包含重要的appid等有关于开发者的信息。</p><p>①打开<a href="https://mp.weixin.qq.com/" target="_blank">微信公众平台</a>右上角有一个注册按钮</p><p>②选择小程序点击进入<br><img src="https://gitee.com/seyzn/img/raw/master/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/zhuce.webp"></p><p>③进入小程序注册见面，填写 <code> 未被微信平台注册，未被微信开放平台注册，未被个人微信号绑定的邮箱</code>，注意这三者必须都得满足，之前我犯了一个错误就是，用绑定过微信公众号的微信注册，导致进入微信公众平台，进去之后只有微信公众号的界面，没有微信小程序的界面，所以这点必须要牢记。</p><p>④邮箱激活，会有邮件发送到你的邮箱。相当于邮箱验证。</p><p>⑤用户信息的等级u，选择祖册的国家&#x2F;地区，以及主体类型，等级主体信息</p><p>⑥新注册的小程序信息完善</p><ul><li>补充小程序基本信息</li><li>给小程序添加项目成员</li><li>生成小程序的AppSecret，即小程序的秘钥</li></ul><p>随后就是安装程序了，<a herf="https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html" target="blank">下载地址</a>，具体安装过程就不展开了，网上也有很多教程。</p><ul><li>安装一定要右键 <code>以管理员方式运行</code> 。</li></ul><p>安装完成后我们双击打开</p><p><img src="https://gitee.com/seyzn/img/raw/master/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/x_jiemian.webp"></p><p>因为我已经创建过微信小程序，所以界面就是这个样子，不过基本形式上面查不了很多，点击+创建一个新的微信小程序，路径自己创建一个空文件夹，选择这个空文件夹即可。然后就是选择AppID这一栏填写我们之前创建的微信小程序账号的appid，如果不知道可以点击最上面的第一个链接登录自己的账号就能查看到自己的appid项目名称可以自写。</p><h1 id="两个数字比大小"><a href="#两个数字比大小" class="headerlink" title="两个数字比大小"></a>两个数字比大小</h1><p>首先编写页面文件，即index.Wxml文件</p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>在虚拟机上创建Linux（CentOS）</title>
       <link href="/2023/03/18/vm%E4%B8%8A%E5%88%9B%E5%BB%BAcentos/"/>
       <url>/2023/03/18/vm%E4%B8%8A%E5%88%9B%E5%BB%BAcentos/</url>
