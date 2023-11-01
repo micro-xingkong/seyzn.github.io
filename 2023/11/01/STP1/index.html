@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>生成树 | seyzn Blog🤣</title><meta name="author" content="seyzn"><meta name="copyright" content="seyzn"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="生成树 前言    * 以太网交换网络中为了进行链路备份，提高网络可靠性，通常会使用几余链路。但是使用穴余链路会在交换网络上产生环路，引发广播风暴以及MAC地址表不稳定等故障现象，从而导致用户通信质量较差，甚至通信中断。为解决交换网络中的环路问题，提出了生成树协议STP（Spanning Tree Protocol）。    * 运行STP协议的设备通过彼此交互信息发现网络中的环路，并有选择的对某">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生成树">
+<meta property="og:url" content="https://seyzn.cn/2023/11/01/STP1/index.html">
+<meta property="og:site_name" content="seyzn Blog🤣">
+<meta property="og:description" content="生成树 前言    * 以太网交换网络中为了进行链路备份，提高网络可靠性，通常会使用几余链路。但是使用穴余链路会在交换网络上产生环路，引发广播风暴以及MAC地址表不稳定等故障现象，从而导致用户通信质量较差，甚至通信中断。为解决交换网络中的环路问题，提出了生成树协议STP（Spanning Tree Protocol）。    * 运行STP协议的设备通过彼此交互信息发现网络中的环路，并有选择的对某">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://micro-xingkong.github.io/pacture.bed/img/bg1.webp">
+<meta property="article:published_time" content="2023-11-01T03:35:01.322Z">
+<meta property="article:modified_time" content="2023-11-01T03:44:27.820Z">
+<meta property="article:author" content="seyzn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://micro-xingkong.github.io/pacture.bed/img/bg1.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://seyzn.cn/2023/11/01/STP1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: seyzn","link":"链接: ","source":"来源: seyzn Blog🤣","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '生成树',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-11-01 11:44:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/seyzn/img/raw/master/touxiang.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://micro-xingkong.github.io/pacture.bed/img/bg1.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">seyzn Blog🤣</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">生成树</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-01T03:35:01.322Z" title="发表于 2023-11-01 11:35:01">2023-11-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-01T03:44:27.820Z" title="更新于 2023-11-01 11:44:27">2023-11-01</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="生成树"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="生成树"><a href="#生成树" class="headerlink" title="生成树"></a>生成树</h1><blockquote>
+<p>前言<br>    * 以太网交换网络中为了进行链路备份，提高网络可靠性，通常会使用几余链路。但是使用穴余链路会在交换网络上产生环路，引发广播风暴以及MAC地址表不稳定等故障现象，从而导致用户通信质量较差，甚至通信中断。为解决交换网络中的环路问题，提出了生成树协议STP（Spanning Tree Protocol）。<br>    * 运行STP协议的设备通过彼此交互信息发现网络中的环路，并有选择的对某个接口进行阻塞，最终将环形网络结构修剪成无环路的树形网络结构，从而防止报文在环形网络中不断循环，避免设备由于重复接收相同的报文造成处理能力下降。<br>    * RSTP（Rapid Spanning Tree Protocol）协议基于STP协议，对原有的STP协议进行了更加细致的修改和补充，实现了网络拓扑快速收敛。 </p>
+</blockquote>
+<p>为什么要有生成树？树是什么？</p>
+<p>树就像是数据结构中的树一样。为了解决而成交换机网络的冗余性与环路。</p>
+<h3 id="技术背景"><a href="#技术背景" class="headerlink" title="技术背景"></a>技术背景</h3><p> <img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image.webp" alt="环路"></p>
+<p>局域网在规模逐渐扩大，引发的问题便是冗余性增加以及形成环路。</p>
+<ul>
+<li>冗余性增加就是如图，接入层交换机单链路上联，则存在单链路故障，也就是如果这根上联链路发生故障，交换机下联用户就断网了。另一个问题的单点故障，也就是交换机如果岩机，交换机下联用户也就<br>断网了。</li>
+</ul>
+<p>进而交换机互联过程中一般会使用冗余链路来实现备份但是会产生环路。</p>
+<p>举个例子就是终端发送报文交给交换机，但是交换机负责转发，你给我我给他他再给你报文不停地传输，而终端设备还在产生新的报文，进而导致拥堵宕机等等。</p>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-1.webp" alt="人为环路"></p>
+<p>这一部分主要是人为原因，说的简单直白点就是我连我自己，就是最简单的环路。</p>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-2.webp" alt="二层环路问题"></p>
+<p>二层环路带来了两种问题：</p>
+<ol>
+<li><p>广播风暴</p>
+<ul>
+<li>根据交换机的转发原则，如果交换机从一个端口上接收到的是一个广播顿，或者是一个目的MAC地址未知的单播帧，则会将这个帧向除源端口之外的所有其他端口转发。如果交换网络中有环路，则这个顿会被无限转发，此时便会形成广播风暴，网络中也会充斥着重复的数据顿。</li>
+<li>本例中，SW3收到了一个广播顿将其进行泛洪，SW1和SW2也会将此顿转发到除了接收此帧的其他所有端口，结果此帧又会被再次转发给SW3，这种循环会一直持续，于是便产生了广播风暴。交换机性能会因此急速下降，并会导致业务中断。</li>
+</ul>
+</li>
+<li><p>MAC地址漂移</p>
+<ul>
+<li>交换机是根据所接收到的数据帧的源地址和接收端口生成MAC地址表项的。</li>
+<li>本例中，SW3收到一个广播帧泛洪，SW1从GEO&#x2F;0&#x2F;1接口接收到广播帧后学习且泛洪，形成MAC地址5489-98EE-788A与GE0&#x2F;0&#x2F;1的映射；SW2收到广播顿后学习且泛洪，SW1再次从GE0&#x2F;0&#x2F;2收到源MAC地址为5489-98EE-788A的广播顿并进行学习，5489-98EE-788A会不断地在GE0&#x2F;0&#x2F;1与GE0&#x2F;0&#x2F;2接口之间来回切换，这被称为MAC地址漂移现象。</li>
+</ul>
+</li>
+</ol>
+<p><strong>而生成树就是为了解决这两种问题</strong></p>
+<p>那么我们就要引入一个概念就是STP</p>
+<blockquote>
+<ul>
+<li>在以太网中，二层网络的环路会带来广播风暴，MAC地址表震荡，重复数据顿等问题，为解决交换网络中的环路问题，提出了STP。</li>
+<li>STP通过构造一棵树来消除交换网络中的环路。</li>
+<li>运行STP算法，判断网络中存在环路的地方并阻断几余链路，将环路网络修剪成无环路的树型网络，从而避免了数据帧在环路网络中的增生和无穷循环。</li>
+</ul>
+</blockquote>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-3.webp" alt="初步认识生成树"></p>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-4.webp" alt="生成树能够动态响应网络拓扑变化调整阻塞接口"></p>
+<p>如图，交换机上运行STP协议，会通过报文监控网络的拓扑结构，正常情况下是将SW3上的一个接口进行阻塞（Block），从而打破环路，当监控到SW1与SW3之间出现链路故障，则恢复阻塞端口进入转发状态。</p>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-5.webp" alt="二层及三层环路"></p>
+<ul>
+<li>常见环路主要分为二层环路和三层环路。<ul>
+<li>二层环路主要因为网络中部署了二层几余环境，或人为的误接线缆导致，可以通过借助特定的协议或机制实现二层防环；</li>
+<li>三层环路主要因为路由环路，可以通过动态路由协议防环和IP报文头部中的TTL字段用于防止报文被无止尽地转发。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-6.webp" alt="生成树园区示意"></p>
+<p>生成树协议应用于园区网络的二层网络中，进行链路备份和消除环路。</p>
+<h2 id="STP"><a href="#STP" class="headerlink" title="STP"></a>STP</h2><blockquote>
+<ul>
+<li>STP是一个用于局域网中消除环路的协议。</li>
+<li>运行该协议的设备通过彼此交互信息而发现网络中的环路，并对某些接口进行阻塞以消除环路。</li>
+<li>STP在网络中运行后会持续监控网络的状态，当网络出现拓扑变更时，STP能够感知并且进行自动响应，从而使得网络状态适应新的拓扑结构，保证网络可靠性。</li>
+<li>由于局域网规模的不断增长，生成树协议已经成为了当前最重要的局域网协议之一。</li>
+</ul>
+</blockquote>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-7.webp" alt="STP"></p>
+<h3 id="桥ID"><a href="#桥ID" class="headerlink" title="桥ID"></a>桥ID</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-8.webp" alt="桥ID"></p>
+<p>首先我们要说的就是桥ID（Bridge ID “BID”）桥ID就是<code>桥优先级+MAC地址</code>因为MAC地址唯一所以BID也是唯一的。桥ID优先级取值范围是0～65535，默认值为32768,可以修改但是修改值必须为4096的倍数。</p>
+<p>选取标准：首先比较优先级大小，<code>优先级小的首选</code>其次比较MAC地址<code>地址越小的首选</code>。</p>
+<h3 id="根桥"><a href="#根桥" class="headerlink" title="根桥"></a>根桥</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-9.webp" alt="根桥"></p>
+<p>都知道树结构吧，学过数据结构的都会认知，树都有一个根，计算机网络拓扑中也存在根，当然不是根服务器，为了避免环路出现就必须阻塞部分接口，选取根桥，建立树状路径就是为了建立树结构。</p>
+<ul>
+<li>树形的网络结构必须有树根，于是STP引入了根桥（Root Bridge）概念。</li>
+<li>对于一个STP网络，根桥在全网中只有一个，它是整个网络的逻辑中心，但不一定是物理中心。根桥会根据网络拓扑的变化而动态变化。</li>
+<li>网络收敛后，根桥会按照一定的时间间隔产生并向外发送配置BPDU，其他设备仅对该报文进行处理，传达拓扑变化记录，从而保证拓扑的稳定。丨</li>
+</ul>
+<h3 id="Cost（开销）"><a href="#Cost（开销）" class="headerlink" title="Cost（开销）"></a>Cost（开销）</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-10.webp" alt="Cost"></p>
+<p>每一个STP接口都会存在一个对应的Cost，一般情况下Cost值是通过STP Cost计算得出，所以是默认就会存在的，当然也可以认为的去设置Cost。</p>
+<p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-11.webp" alt="Cost计算方法"></p>
+<h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-12.webp" alt="RPC"></p>
+<p>RPC就是根路径开销，说白了就是当前交换机到某个根桥的“成本，路费”。</p>
+<p>RPC使用的是累加，也就是该设备到根桥的路径的开销和</p>
+<p>根桥到根桥的RPC为0.</p>
+<h3 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-13.webp" alt="Port ID"></p>
+<p>PID就是端口ID，每一个端口都会对应一个编号就是PID</p>
+<ul>
+<li>运行STP交换机的每个端口都有一个端口ID，端口ID由端口优先级和端口号构成。端口优先级取值范围是0到240，步长为16，即取值必须为16的整数倍。缺省情况下，端口优先级是128。端口ID可以用来确定端口角色。</li>
+</ul>
+<h3 id="BPDU"><a href="#BPDU" class="headerlink" title="BPDU"></a>BPDU</h3><p><img src="https://gitee.com/seyzn/img/raw/master/%E6%95%B0%E9%80%9A/3day1/image-14.webp" alt="BPDU"></p>
+<blockquote>
+<p>由于工作上的变故可能会断更一段时间。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://seyzn.cn">seyzn</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://seyzn.cn/2023/11/01/STP1/">https://seyzn.cn/2023/11/01/STP1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://seyzn.cn" target="_blank">seyzn Blog🤣</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://micro-xingkong.github.io/pacture.bed/img/bg1.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/10/24/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%802Day/"><img class="prev-cover" src="https://micro-xingkong.github.io/pacture.bed/img/bg1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据通信基础第二天</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/seyzn/img/raw/master/touxiang.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">seyzn</div><div class="author-info__description">Welcome to my blog, I hope you can find useful knowledge here.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/micro-xingkong"><i></i><span>🛴前往小家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/micro-xingkong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:micro.xingong@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><center>域名：<br><a href="https://seyzn.cn"><b><font color="#5ea6e5">seyzn.cn</font></b></a>&nbsp;</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A0%91"><span class="toc-number">1.</span> <span class="toc-text">生成树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%83%8C%E6%99%AF"><span class="toc-number">1.0.1.</span> <span class="toc-text">技术背景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STP"><span class="toc-number">1.1.</span> <span class="toc-text">STP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%A5ID"><span class="toc-number">1.1.1.</span> <span class="toc-text">桥ID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%A1%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">根桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cost%EF%BC%88%E5%BC%80%E9%94%80%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">Cost（开销）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC"><span class="toc-number">1.1.4.</span> <span class="toc-text">RPC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PID"><span class="toc-number">1.1.5.</span> <span class="toc-text">PID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BPDU"><span class="toc-number">1.1.6.</span> <span class="toc-text">BPDU</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By seyzn</div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><a class="magnet_link_more"  href="https://seyzn.cn/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #f2f2f2;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #b30070}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><!-- hexo injector body_end end --></body></html>
